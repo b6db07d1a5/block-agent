@@ -27,8 +27,7 @@ const User = ({user, setUserName, setTimeType, setTimeValue, deleteUser}) => {
                 id={id} 
                 onClick={deleteUser} > Delete </button>
             <span style={style(isExpire)}> 
-                {new Date(expireDate).toLocaleTimeString('en-GB').slice(0,-3)}- 
-                {new Date(expireDate).toLocaleDateString('en-GB')}
+                {new Date(expireDate).toLocaleTimeString('en-GB').slice(0,-3)} - {new Date(expireDate).toLocaleDateString('en-GB')}
                 {(isExpire? " Expired": null )}
             </span>
         </div>
