@@ -12,8 +12,8 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.get('/api/users', (req, res) => {
-  if (fs.existsSync('blockuser.json')) {
-    fs.readFile('blockuser.json', 'utf8', function(err, data){
+  if (fs.existsSync('conf/blockuser.json')) {
+    fs.readFile('conf/blockuser.json', 'utf8', function(err, data){
       if (err){
         console.log(err);
       }
