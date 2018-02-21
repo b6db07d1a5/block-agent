@@ -17,7 +17,6 @@ const User = ({user, setUserName, setTimeType, setTimeValue, deleteUser}) => {
                 {selectSource.map((source) => <option key={source.id} value={source.id}>{source.name}</option>)}
             </select>
             <input style={styles.timeValue}
-                    name="text" 
                     id={id}
                     name={timeType}
                     type="number"

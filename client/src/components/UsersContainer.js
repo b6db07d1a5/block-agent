@@ -151,21 +151,17 @@ class UsersContainer extends Component {
 
     setExpireDate = (timeValue, timeType) => {
         const { currentDate } = this.state
-        timeValue = parseInt(timeValue) || 0
+        const value = parseInt(timeValue, 10) || 0
 
         switch(timeType) {
             case time.min :
-                return new Date(new Date().setMinutes(currentDate.getMinutes() + parseInt(timeValue)))
-                break;
+                return new Date(new Date().setMinutes(currentDate.getMinutes() + value))
             case time.hour :
-                return new Date(new Date().setHours(currentDate.getHours() + parseInt(timeValue)))
-                break;
+                return new Date(new Date().setHours(currentDate.getHours() + value))
             case time.day :
-                return new Date(new Date().setDate(currentDate.getDate() + parseInt(timeValue)))
-                break
+                return new Date(new Date().setDate(currentDate.getDate() + value))
             default:
                 return new Date()
-                break;
         }
     }
 
