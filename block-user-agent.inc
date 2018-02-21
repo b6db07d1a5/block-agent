@@ -1,3 +1,3 @@
-if ($http_user_agent ~* (cccc|ccxx|ccxx|cvcxx|xccx|gg|ff|hhaew) ) {
+if ($http_user_agent ~* (ccxx|ccxx|cvcxx|xccx|hhaew) ) {
       return 403;
 }

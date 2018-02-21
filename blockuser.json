@@ -5,7 +5,7 @@
         "userType": "agent",
         "timeValue": "4",
         "timeType": "min",
-        "isExpire": false,
+        "isExpire": true,
         "expireDate": "2018-02-21T04:46:07.104Z",
         "selectSource": [
             {
@@ -143,7 +143,7 @@
         "userType": "agent",
         "timeValue": "1",
         "timeType": "min",
-        "isExpire": false,
+        "isExpire": true,
         "expireDate": "2018-02-21T04:45:53.649Z",
         "selectSource": [
             {
@@ -166,7 +166,7 @@
         "userType": "agent",
         "timeValue": "3",
         "timeType": "min",
-        "isExpire": false,
+        "isExpire": true,
         "expireDate": "2018-02-21T04:48:26.555Z",
         "selectSource": [
             {
@@ -188,9 +188,9 @@
         "userName": "hhaew",
         "userType": "agent",
         "timeValue": "5",
-        "timeType": "min",
+        "timeType": "hour",
         "isExpire": false,
-        "expireDate": "2018-02-21T04:50:24.942Z",
+        "expireDate": "2018-02-21T10:15:30.569Z",
         "selectSource": [
             {
                 "id": "min",

@@ -18,6 +18,8 @@ const selectSource = [
     {id: 'day', name: 'Days'}
 ]
 
+const api = 'http://localhost:3000/'
+
 class UsersContainer extends Component {
 
     state = {
@@ -38,7 +40,7 @@ class UsersContainer extends Component {
     }
 
     getUserList = () => {
-        fetch(`/api/users`)
+        fetch(`${api}/api/users`)
         .then((resp) => resp.json()) 
         .then((data) => {
             if(data.data.length > 0) {
@@ -48,7 +50,7 @@ class UsersContainer extends Component {
     }
 
     saveUserList = () => {
-        const url = `/api/users`;
+        const url = `${api}/api/users`;
         const { users } = this.state
         let fetchData = { 
             method: 'POST', 
@@ -178,6 +180,9 @@ class UsersContainer extends Component {
                         </div>
                         
                         <p style={styles.header}> Agent List </p>
+                        <div style={styles.list}>
+                            <span style={styles.list.name}> Name </span> <span style={styles.list.timeType}> Time </span> <span> Duration </span>  
+                        </div>
                         {
                             this.state.users
                                 .filter((filter) => filter.userType === user.agent)
@@ -191,6 +196,9 @@ class UsersContainer extends Component {
                     </div>
                     <div>
                         <p style={styles.header}> IP List </p>
+                        <div style={styles.list}>
+                            <span style={styles.list.ip}> IP </span> <span style={styles.list.timeType}> Time </span> <span> Duration </span>  
+                        </div>
                         {
                             this.state.users
                                 .filter((filter) => filter.userType === user.ip)
@@ -228,6 +236,30 @@ const styles = {
     header : {
         marginTop: 40,
         marginBottom: 20
+    },
+    list : {
+        padding: 2,
+        paddingBottom: 5,
+        fontSize: 10,
+        name : {
+            marginRight: 210,
+        },
+        ip : {
+            marginRight: 220,
+        },
+        timeType: {
+            marginRight: 40
+        },
+        timeValue: {
+            width: 50, marginRight: 5
+        },
+        delete: {
+            marginRight: 20,
+            background: '#ef8656',
+            color: '#fff',
+            borderRadius: 2,
+            border: 'none',
+        }
     },
     save: {
         background: '#3498db',
