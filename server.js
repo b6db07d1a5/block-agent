@@ -40,7 +40,6 @@ app.post('/api/users', (req, res) => {
         }
         callback();
     });
-
     }, function (err) {
         if (err) {
             console.log('A file failed to process');
