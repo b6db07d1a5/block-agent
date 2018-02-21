@@ -1,1 +1,0 @@
-Deny 1asdd;
