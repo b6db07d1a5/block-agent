@@ -32,6 +32,9 @@ class UsersContainer extends Component {
             1000
         );
     }
+    componentWillUnmount(){
+        clearInterval(this.timer);
+    }
 
     getUserList = () => {
         fetch(`/api/users`)
