@@ -31,7 +31,7 @@ app.post('/api/users', (req, res) => {
 
   async.each(['blockuser.json', 'block-user-agent.inc', 'block-user-ip.inc'], function (file, callback) {
 
-    fs.writeFile(file, fileType(file, req.body), function (err) {
+    fs.writeFile(`conf/${file}`, fileType(file, req.body), function (err) {
         if (err) {
             console.log(err);
         }
