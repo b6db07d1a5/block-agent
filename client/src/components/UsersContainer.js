@@ -169,11 +169,11 @@ class UsersContainer extends Component {
                 <div style={styles.content}>
                     <div >
                         <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: 30}}> 
-                            <span> Block Agent </span> 
+                            <span> Block Users </span> 
                             <button style={styles.save} onClick={this.saveUserList}> Save </button> 
                         </div>
                         
-                        <p style={styles.header}> User List </p>
+                        <p style={styles.header}> Agent List </p>
                         {
                             this.state.users
                                 .filter((filter) => filter.userType === user.agent)
@@ -214,7 +214,7 @@ const styles = {
         alignItems: 'center',
         justifyContent: 'center',
         paddingTop: 50,
-        paddingBottom: 50
+        paddingBottom: 100
     },
     content: {
         width: '60%',
