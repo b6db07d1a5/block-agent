@@ -24,6 +24,7 @@ class UsersContainer extends Component {
         currentDate: new Date(),
         users: []
     }
+    timer = null
 
     componentDidMount() {
         this.getUserList()
