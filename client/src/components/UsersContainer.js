@@ -185,7 +185,7 @@ class UsersContainer extends Component {
                         }
                         <button style={styles.add} name={user.agent} onClick={this.addNewUser}> Add User </button>
                     </div>
-                    <div >
+                    <div>
                         <p style={styles.header}> IP List </p>
                         {
                             this.state.users
@@ -196,7 +196,7 @@ class UsersContainer extends Component {
                                                     setTimeValue={this.setTimeValue} 
                                                     deleteUser={this.deleteUser} /> )
                         }
-                        <button style={styles.add} name={user.ip} onClick={this.addNewUser}> Add Ip </button>
+                        <button style={styles.add} name={user.ip} onClick={this.addNewUser}> Add IP </button>
                     </div>
                 </div>
             </div>
@@ -206,19 +206,20 @@ class UsersContainer extends Component {
 
 const styles = {
     container :{
-        backgroundColor: '#fcfdff',
+        backgroundColor: '#345fa8',
         width: '100%',
         minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
+        paddingTop: 50,
+        paddingBottom: 50
     },
     content: {
         width: '60%',
         backgroundColor: '#fff',
-        border: '1px solid #bfbfbf',
-        padding: 20
+        padding: 20,
     },
     header : {
         marginTop: 40,
