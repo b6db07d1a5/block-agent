@@ -18,8 +18,6 @@ const selectSource = [
     {id: 'day', name: 'Days'}
 ]
 
-const api = 'http://localhost:3000/'
-
 class UsersContainer extends Component {
 
     state = {
@@ -40,7 +38,7 @@ class UsersContainer extends Component {
     }
 
     getUserList = () => {
-        fetch(`${api}/api/users`)
+        fetch(`/api/users`)
         .then((resp) => resp.json()) 
         .then((data) => {
             if(data.data.length > 0) {
@@ -50,7 +48,7 @@ class UsersContainer extends Component {
     }
 
     saveUserList = () => {
-        const url = `${api}/api/users`;
+        const url = `/api/users`;
         const { users } = this.state
         let fetchData = { 
             method: 'POST', 
