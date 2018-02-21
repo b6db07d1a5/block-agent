@@ -77,9 +77,8 @@ class UsersContainer extends Component {
     addNewUser = (e) => {
         const {name: userType} = e.target
         let { users: newUsers } = this.state
-        const dateId = new Date()
         newUsers.push({
-            id: dateId.getMilliseconds() + dateId.getSeconds(),
+            id: Math.random().toString(16).substr(2,9),
             userName: '',
             userType: userType,
             timeValue: '',
@@ -97,7 +96,7 @@ class UsersContainer extends Component {
     deleteUser = (e) => {
         const {id} = e.target
         let { users: newUsers } = this.state
-        newUsers = newUsers.filter((user) => user.id !== parseInt(id))
+        newUsers = newUsers.filter((user) => user.id !== id)
         this.setState({
             ...this.state,
             users: newUsers
@@ -110,7 +109,7 @@ class UsersContainer extends Component {
         
         userName = userName.trim()
         
-        newUsers = newUsers.map((user)=> (user.id === parseInt(id)? {...user, userName} : user))
+        newUsers = newUsers.map((user)=> (user.id === id? {...user, userName} : user))
         this.setState({
             ...this.state,
             users: newUsers
@@ -120,7 +119,7 @@ class UsersContainer extends Component {
     setTimeType = (e) => {
         const {id, value: timeType} = e.target
         let { users: newUsers } = this.state
-        newUsers = newUsers.map((user)=> (user.id === parseInt(id)? {...user, 
+        newUsers = newUsers.map((user)=> (user.id === id? {...user, 
             timeType,
             expireDate: this.setExpireDate(user.timeValue, timeType)} 
             : user))
@@ -134,7 +133,7 @@ class UsersContainer extends Component {
         const {id, value: timeValue, name: timeType} = e.target
         let { users: newUsers } = this.state
         newUsers = newUsers.map((user)=> 
-            (user.id === parseInt(id)? {...user, 
+            (user.id === id? {...user, 
                 timeValue,
                 expireDate: this.setExpireDate(timeValue, timeType)} 
                 : user))
@@ -168,37 +167,37 @@ class UsersContainer extends Component {
         return (
             <div style={styles.container}>
                 <div style={styles.content}>
-                <div >
-                    <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: 30}}> 
-                        <span> Block Agent </span> 
-                        <button style={styles.save} onClick={this.saveUserList}> Save </button> 
+                    <div >
+                        <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: 30}}> 
+                            <span> Block Agent </span> 
+                            <button style={styles.save} onClick={this.saveUserList}> Save </button> 
+                        </div>
+                        
+                        <p style={styles.header}> User List </p>
+                        {
+                            this.state.users
+                                .filter((filter) => filter.userType === user.agent)
+                                .map((user) => <User key={user.id} user={user} 
+                                                    setUserName={this.setUserName} 
+                                                    setTimeType={this.setTimeType} 
+                                                    setTimeValue={this.setTimeValue} 
+                                                    deleteUser={this.deleteUser} /> )
+                        }
+                        <button style={styles.add} name={user.agent} onClick={this.addNewUser}> Add User </button>
                     </div>
-                    
-                    <p style={styles.header}> User List </p>
-                    {
-                        this.state.users
-                            .filter((filter) => filter.userType === user.agent)
-                            .map((user) => <User key={user.id} user={user} 
-                                                setUserName={this.setUserName} 
-                                                setTimeType={this.setTimeType} 
-                                                setTimeValue={this.setTimeValue} 
-                                                deleteUser={this.deleteUser} /> )
-                    }
-                    <button style={styles.add} name={user.agent} onClick={this.addNewUser}> Add User </button>
-                </div>
-                <div >
-                    <p style={styles.header}> IP List </p>
-                    {
-                        this.state.users
-                            .filter((filter) => filter.userType === user.ip)
-                            .map((user) => <User key={user.id} user={user} 
-                                                setUserName={this.setUserName} 
-                                                setTimeType={this.setTimeType} 
-                                                setTimeValue={this.setTimeValue} 
-                                                deleteUser={this.deleteUser} /> )
-                    }
-                    <button style={styles.add} name={user.ip} onClick={this.addNewUser}> Add Ip </button>
-                </div>
+                    <div >
+                        <p style={styles.header}> IP List </p>
+                        {
+                            this.state.users
+                                .filter((filter) => filter.userType === user.ip)
+                                .map((user) => <User key={user.id} user={user} 
+                                                    setUserName={this.setUserName} 
+                                                    setTimeType={this.setTimeType} 
+                                                    setTimeValue={this.setTimeValue} 
+                                                    deleteUser={this.deleteUser} /> )
+                        }
+                        <button style={styles.add} name={user.ip} onClick={this.addNewUser}> Add Ip </button>
+                    </div>
                 </div>
             </div>
         );
@@ -216,6 +215,7 @@ const styles = {
         justifyContent: 'center',
     },
     content: {
+        width: '60%',
         backgroundColor: '#fff',
         border: '1px solid #bfbfbf',
         padding: 20

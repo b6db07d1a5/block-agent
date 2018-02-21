@@ -1,2 +1,2 @@
-Deny 10.10.10.22;
-Deny 90.1.20.202;
+Deny asd;
+Deny 1asdd;
