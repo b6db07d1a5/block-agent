@@ -78,13 +78,16 @@ class Container extends Component {
     }
 
     deleteUser = (e) => {
+        const result = window.confirm("Do you want to delete this user?");
+        if (!result) return;
+
         const { id } = e.target
         axios.delete(`/blocked/${id}`)
             .then((response) => {
                 this.setState({
                     list: this.state.list.filter((item) => item.id !== id)
                 })
-                alert(`Delete User Agent is ${response.statusText}`)
+                //alert(`Delete User Agent is ${response.statusText}`)
             })
             .catch(function (error) {
                 alert(error.response.data.error)
@@ -92,15 +95,21 @@ class Container extends Component {
     }
 
     render() {
+        const title = (this.props.type === 'ip'? 'IP' : 'User Agent')
         return (
             <div>
+                <h4> {title} </h4>
                 <FormAgent 
+                    placeholder={title}
                     value={this.state} 
                     setValue={this.setValue}
                     setTimeUnit={this.setTimeUnit} 
                     setTimeValue={this.setTimeValue}
                     blockUser={this.blockUser} />
-                <ListAgent list={this.state.list} deleteUser={this.deleteUser} />
+                <ListAgent 
+                    placeholder={title} 
+                    list={this.state.list} 
+                    deleteUser={this.deleteUser} />
             </div>
         );
     }

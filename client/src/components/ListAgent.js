@@ -1,19 +1,37 @@
 import React, { Component } from 'react';
 import fnsFormat from 'date-fns/format'
+import { Table, Button, Glyphicon } from 'react-bootstrap'
 
 class ListAgent extends Component {
     
     render() {
         return (
-            <div>
+            <Table striped bordered condensed hover>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Expire Date</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
                 {this.props.list.map((user, i) => 
-                    <div key={user.id} style={{display: 'flex', justifyContent: 'space-between'}}>
-                        <p> {user.value} </p>
-                        <p> {(user.expireAt? fnsFormat(new Date(user.expireAt), 'DD/MM/YYYY HH:mm:ss') : '' )} </p>
-                        <button id={user.id} name={user.type} onClick={this.props.deleteUser}> Delete </button>
-                    </div>
+                    <tr key={user.id}>
+                        <td> {user.value} </td>
+                        <td> {(user.expireAt? fnsFormat(new Date(user.expireAt), 'DD/MM/YYYY HH:mm:ss') : '' )} </td>
+                        <td> 
+                            <center>
+                                <Button bsSize='xsmall' bsStyle="danger" id={user.id} name={user.type} onClick={this.props.deleteUser}> 
+                                    <Glyphicon glyph="glyphicon glyphicon-trash" /> {' '}
+                                    Delete 
+                                </Button>
+                            </center>
+                        </td>
+                    </tr>
                     )}
-            </div>
+            </tbody>
+                
+            </Table>
         );
     }
 }

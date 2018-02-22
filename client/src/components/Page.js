@@ -1,13 +1,22 @@
 import React, { Component } from 'react';
 import Container from './Container'
-
+import { Grid, Row, Col, PageHeader } from 'react-bootstrap';
 class Page extends Component {
     render() {
         return (
-            <div style={{display: 'flex'}}>
-                <Container type='userAgent' />
-                <Container type='ip' />
-            </div>
+                <Grid>
+                    <PageHeader>
+                        Block User List 
+                    </PageHeader>
+                    <Row>
+                        <Col xs={6} >
+                            <Container type='userAgent' />
+                        </Col>
+                        <Col xs={6} >
+                            <Container type='ip' />
+                        </Col>
+                    </Row>
+                </Grid>
         );
     }
 }
