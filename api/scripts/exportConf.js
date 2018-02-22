@@ -1,8 +1,11 @@
 const fs = require('fs-extra')
+const compareAsc = require('date-fns/compare_asc')
 
-
+const blockedFileJson = 'conf/blocked.json'
 const blockedUserAgentConf = 'conf/block-user-agent.inc'
 const blockedIpConf = 'conf/block-user-ip.inc'
+const TYPE_USER_AGENT = 'userAgent'
+const TYPE_IP = 'ip'
 
 let items = []
 
@@ -12,6 +15,7 @@ try {
 
 }
 
+console.log(items)
 Promise.all([
     fs.outputFile(blockedUserAgentConf, exportUser(items)),
     fs.outputFile(blockedIpConf, exportIp(items))
@@ -29,9 +33,7 @@ function exportUser(items) {
   }
   
   function exportIp(items) {
-    const result = items.filter((item) => 
-                          item.type === TYPE_IP && 
-                          !isExpire(item.expireAt))
+    const result = items.filter((item) => item.type === TYPE_IP && !isExpire(item.expireAt))
     
     let denyStr = ''
     result.forEach(({ value }) => {

@@ -5,7 +5,6 @@ const fs = require('fs-extra');
 const Joi = require('Joi')
 const _ = require('lodash')
 const uuidv1 = require('uuid/v1')
-const compareAsc = require('date-fns/compare_asc')
 
 const app = express();
 const port = process.env.PORT || 5000;
