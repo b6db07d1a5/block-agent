@@ -11,6 +11,21 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
+
+app.get('/blocked/:type', (req, res) => {
+  const type = req.params.type
+  if(!['userAgent', 'ip'].includes(type)){
+    return res.status(400).send({error: 'Invalid Type'})
+  }
+  fs.readFile('conf/blocked.json', 'utf8', (error, data) => {
+    if(error) return res.send({ data: []});
+    const items = JSON.parse(data)
+    return res.send({data: items.filter(item => item.type === type)})
+  })
+})
+
+
+
 app.get('/api/users', (req, res) => {
   if (fs.existsSync('conf/blockuser.json')) {
     fs.readFile('conf/blockuser.json', 'utf8', function(err, data){
