@@ -5,12 +5,18 @@
   "license": "MIT",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "export": "node scripts/exportConf.js"
   },
   "dependencies": {
     "async": "^2.6.0",
     "body-parser": "^1.18.2",
-    "express": "^4.16.2"
+    "date-fns": "^1.29.0",
+    "express": "^4.16.2",
+    "fs-extra": "^5.0.0",
+    "joi": "^13.1.2",
+    "lodash": "^4.17.5",
+    "uuid": "^3.2.1"
   },
   "devDependencies": {
     "nodemon": "^1.15.1"

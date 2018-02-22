@@ -1,10 +1,20 @@
 const express = require('express');
 const async = require('async');
 const bodyParser = require('body-parser');
-const fs = require('fs');
+const fs = require('fs-extra');
+const Joi = require('Joi')
+const _ = require('lodash')
+const uuidv1 = require('uuid/v1')
+const compareAsc = require('date-fns/compare_asc')
 
 const app = express();
 const port = process.env.PORT || 5000;
+const TYPE_USER_AGENT = 'userAgent'
+const TYPE_IP = 'ip'
+const allowTypes = [TYPE_USER_AGENT, TYPE_IP]
+const blockedFileJson = 'conf/blocked.json'
+const blockedUserAgentConf = 'conf/block-user-agent.inc'
+const blockedIpConf = 'conf/block-user-ip.inc'
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -12,98 +22,60 @@ app.use(bodyParser.urlencoded({
 }));
 
 
-app.get('/blocked/:type', (req, res) => {
+app.get('/blocked/:type', async (req, res) => {
   const type = req.params.type
-  if(!['userAgent', 'ip'].includes(type)){
+  if(!allowTypes.includes(type)){
     return res.status(400).send({error: 'Invalid Type'})
   }
-  fs.readFile('conf/blocked.json', 'utf8', (error, data) => {
-    if(error) return res.send({ data: []});
-    const items = JSON.parse(data)
-    return res.send({data: items.filter(item => item.type === type)})
+
+  try {
+    const items = await fs.readJson(blockedFileJson)
+    res.send({data: items.filter(item => item.type === type)})
+  } catch (error) {
+    return res.send({ data: []});
+  }
+})
+
+app.post('/blocked', async (req, res) => {
+  const body = req.body;
+
+  const schema = Joi.object({
+    type: Joi.any().valid(allowTypes).required(),
+    value: body.type === 'ip'
+      ? Joi.string().ip().required()
+      : Joi.string().required(),
+    expireAt: Joi.date().timestamp('unix')
   })
+
+  const {error, value} = Joi.validate(body, schema)
+  if(error) {
+    return res.status(400).send({error: _.get(error, 'details[0].message')})
+  }
+
+  let items = []
+  try {
+    items = await fs.readJson(blockedFileJson)
+  } catch (error) {}
+
+  const item = {
+    id: uuidv1(),
+    ...value
+  }
+
+  items.push(item)
+
+  try {
+    await fs.writeJson(blockedFileJson, items)
+
+    return res.send({data: item})
+  } catch (error) {
+    return res.status(500).send({error: error.message})
+  }
 })
 
 
 
-app.get('/api/users', (req, res) => {
-  if (fs.existsSync('conf/blockuser.json')) {
-    fs.readFile('conf/blockuser.json', 'utf8', function(err, data){
-      if (err){
-        console.log(err);
-      }
-      else {
-        res.send({ data: JSON.parse(data) });
-      }
-    });
-  }
-  else {
-    res.send({ data: {} })
-  }
-});
-
-app.post('/api/users', (req, res) => {
-
-  async.each(['blockuser.json', 'block-user-agent.inc', 'block-user-ip.inc'], function (file, callback) {
-
-    fs.writeFile(`conf/${file}`, fileType(file, req.body), function (err) {
-        if (err) {
-            console.log(err);
-        }
-        else {
-            console.log(file + ' was updated.');
-        }
-        callback();
-    });
-    }, function (err) {
-        if (err) {
-            console.log('A file failed to process');
-        }
-        else {
-            console.log('All files have been processed successfully');
-            res.send({ result: 'success' })
-        }
-    });
-})
-
-function fileType(file, users){
-  switch(file) {
-    case 'blockuser.json' :
-      return JSON.stringify(users, null, 4);
-    break;
-    case 'block-user-agent.inc' :
-      return exportUser(users);
-    break;
-    case 'block-user-ip.inc' :
-      return exportIp(users);
-    break;
-    default :
-      return ''
-    break;
-
-  }
-
-}
-
-function exportUser(users) {
-  let usersStr = users.filter((filter) => filter.userType === 'agent' && filter.isExpire === false)
-                    .map((user) => user.userName)
-                    .join('|')
-
-  return `if ($http_user_agent ~* (${usersStr}) ) {
-      return 403;
-}`
-}
-
-function exportIp(users) {
-  let usersFiltered = users.filter((filter) => filter.userType === 'ip' && filter.isExpire === false)
-  
-  let denyStr = ''
-  usersFiltered.forEach((user) => {
-      denyStr += `Deny ${user.userName};\n`
-  });
-  return denyStr;
-}
+////////
 
 app.listen(port, (err) => {
   if (err) {
