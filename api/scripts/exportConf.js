@@ -1,11 +1,14 @@
 const fs = require('fs-extra')
 const compareAsc = require('date-fns/compare_asc')
 
-const blockedFileJson = 'conf/blocked.json'
-const blockedUserAgentConf = 'conf/block-user-agent.inc'
-const blockedIpConf = 'conf/block-user-ip.inc'
-const TYPE_USER_AGENT = 'userAgent'
-const TYPE_IP = 'ip'
+const {
+    TYPE_USER_AGENT,
+    TYPE_IP,
+    allowTypes,
+    blockedFileJson,
+    blockedUserAgentConf,
+    blockedIpConf,
+  } = require('../constants')
 
 let items = []
 
@@ -15,7 +18,6 @@ try {
 
 }
 
-console.log(items)
 Promise.all([
     fs.outputFile(blockedUserAgentConf, exportUser(items)),
     fs.outputFile(blockedIpConf, exportIp(items))

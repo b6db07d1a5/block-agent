@@ -6,14 +6,17 @@ const Joi = require('Joi')
 const _ = require('lodash')
 const uuidv1 = require('uuid/v1')
 
+const {
+  TYPE_USER_AGENT,
+  TYPE_IP,
+  allowTypes,
+  blockedFileJson,
+  blockedUserAgentConf,
+  blockedIpConf,
+} = require('./constants')
+
 const app = express();
 const port = process.env.PORT || 5000;
-const TYPE_USER_AGENT = 'userAgent'
-const TYPE_IP = 'ip'
-const allowTypes = [TYPE_USER_AGENT, TYPE_IP]
-const blockedFileJson = 'conf/blocked.json'
-const blockedUserAgentConf = 'conf/block-user-agent.inc'
-const blockedIpConf = 'conf/block-user-ip.inc'
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -65,16 +68,30 @@ app.post('/blocked', async (req, res) => {
 
   try {
     await fs.writeJson(blockedFileJson, items)
-
     return res.send({data: item})
   } catch (error) {
     return res.status(500).send({error: error.message})
   }
 })
 
+app.delete('/blocked/:id', async (req, res) => {
+  
+  let items = []
+  try {
+    items = await fs.readJson(blockedFileJson)
+  } catch (error) {}  
 
+  const { id } = req.params
+  const result = items.filter(item => item.id !== id)
+  
+  try {
+    await fs.writeJson(blockedFileJson, result)
+    return res.send({status: (items.length === result.length? 'can not delete' : 'success')})
+  } catch (error) {
+    return res.status(500).send({error: error.message})
+  }
 
-////////
+})
 
 app.listen(port, (err) => {
   if (err) {
