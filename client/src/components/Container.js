@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios'
+import { get } from 'lodash'
 
 import FormAgent from './FormAgent'
 import ListAgent from './ListAgent'
+
+const api = 'http://localhost:5000'
 
 const mapTimeUnit = {
     day: 86400,
@@ -25,7 +28,7 @@ class Container extends Component {
     }
 
     componentDidMount() {
-        axios.get(`/blocked/${this.props.type}`)
+        axios.get(`${api}/blocked/${this.props.type}`)
             .then((response) => {
                 this.setState({
                     list: response.data.data
@@ -62,18 +65,19 @@ class Container extends Component {
         if(timeValue) {
             body.expireAt = setUnixDate(timeUnit, timeValue)
         }
-        axios.post(`/blocked/`, body)
+        axios.post(`${api}/blocked/`, body)
         .then((response) => {
             let currentList = this.state.list
             currentList.push(response.data.data)
             this.setState({
                 list: currentList
             })
-            console.log(response)
-            
         })
         .catch((error) => {
-            alert(error.response.data.error)
+            // console.log(error.response)
+            alert(
+                get(error, 'response.data.error', error.message)
+            )
         });
     }
 
@@ -82,7 +86,7 @@ class Container extends Component {
         if (!result) return;
 
         const { id } = e.target
-        axios.delete(`/blocked/${id}`)
+        axios.delete(`${api}/blocked/${id}`)
             .then((response) => {
                 this.setState({
                     list: this.state.list.filter((item) => item.id !== id)
@@ -107,7 +111,7 @@ class Container extends Component {
                     setTimeValue={this.setTimeValue}
                     blockUser={this.blockUser} />
                 <ListAgent 
-                    placeholder={title} 
+                    title={title} 
                     list={this.state.list} 
                     deleteUser={this.deleteUser} />
             </div>

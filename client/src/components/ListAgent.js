@@ -9,7 +9,7 @@ class ListAgent extends Component {
             <Table striped bordered condensed hover>
             <thead>
                 <tr>
-                    <th>Name</th>
+                    <th>{this.props.title}</th>
                     <th>Expire Date</th>
                     <th>Delete</th>
                 </tr>

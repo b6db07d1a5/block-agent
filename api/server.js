@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors')
 const async = require('async');
 const bodyParser = require('body-parser');
 const fs = require('fs-extra');
@@ -18,6 +19,7 @@ const {
 const app = express();
 const port = process.env.PORT || 5000;
 
+app.use(cors())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
