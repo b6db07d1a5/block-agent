@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios'
 import { get } from 'lodash'
-
-import FormAgent from './FormAgent'
-import ListAgent from './ListAgent'
+import UserForm from './UserForm'
+import UserList from './UserList'
 
 const api = 'http://localhost:5000'
 
@@ -13,19 +12,25 @@ const mapTimeUnit = {
     min: 60
 }
 
+const defaultState = {
+    value:'',
+    timeUnit: 'day',
+    timeValue: '',
+    isAlert: {
+        value: false,
+        message: null
+    },
+    list: []
+}
+
 function setUnixDate(timeUnit, timeValue) {
     if(!timeValue) return '';
     return (Date.now() / 1000) + (timeValue * mapTimeUnit[timeUnit])
 }
 
-class Container extends Component {
+class Content extends Component {
 
-    state = {
-        value:'',
-        timeUnit: 'day',
-        timeValue: '',
-        list: []
-    }
+    state = defaultState
 
     componentDidMount() {
         axios.get(`${api}/blocked/${this.props.type}`)
@@ -38,15 +43,20 @@ class Container extends Component {
                 console.log(error);
             });
     }
-
     setValue = (e) => {
+        const { value } = e.target
         this.setState({
-            value: e.target.value
+            value: value,
+            isAlert: (value? { value: false,} :
+                    {
+                        value: true,
+                        message: 'Please insert user value.'
+                    })
         })
     }
-    setTimeUnit = (e) => {
+    setTimeUnit = (event, eventValue) => {
         this.setState({
-            timeUnit: e.target.value
+            timeUnit: eventValue.target.text
         })
     }
     setTimeValue = (e) => {
@@ -57,7 +67,10 @@ class Container extends Component {
     blockUser = (e) => {
         const { value, timeUnit, timeValue } = this.state
         const { type } = this.props
-        if(!value) return;
+        if(!value) {
+            this.setState({isAlert: {value: true, message: 'Please insert user value.'}}) 
+            return;
+        }
         let body = {
             type: type,
             value: value
@@ -67,25 +80,24 @@ class Container extends Component {
         }
         axios.post(`${api}/blocked/`, body)
         .then((response) => {
-            let currentList = this.state.list
-            currentList.push(response.data.data)
             this.setState({
-                list: currentList
+                ...defaultState,
+                list: [response.data.data].concat(this.state.list)
             })
         })
         .catch((error) => {
-            // console.log(error.response)
-            alert(
-                get(error, 'response.data.error', error.message)
-            )
+            this.setState({
+                isAlert: {
+                    value: true,
+                    message: get(error, 'response.data.error', error.message)
+                }
+            })
         });
     }
-
-    deleteUser = (e) => {
+    deleteUser = id => () => {
         const result = window.confirm("Do you want to delete this user?");
         if (!result) return;
 
-        const { id } = e.target
         axios.delete(`${api}/blocked/${id}`)
             .then((response) => {
                 this.setState({
@@ -94,6 +106,7 @@ class Container extends Component {
                 //alert(`Delete User Agent is ${response.statusText}`)
             })
             .catch(function (error) {
+                console.log('error', error)
                 alert(error.response.data.error)
             });
     }
@@ -102,21 +115,23 @@ class Container extends Component {
         const title = (this.props.type === 'ip'? 'IP' : 'User Agent')
         return (
             <div>
-                <h4> {title} </h4>
-                <FormAgent 
-                    placeholder={title}
+                <UserForm 
+                    title={title}
                     value={this.state} 
                     setValue={this.setValue}
                     setTimeUnit={this.setTimeUnit} 
                     setTimeValue={this.setTimeValue}
-                    blockUser={this.blockUser} />
-                <ListAgent 
+                    blockUser={this.blockUser}
+                    error={this.state.isAlert}
+                />
+                <UserList 
                     title={title} 
                     list={this.state.list} 
-                    deleteUser={this.deleteUser} />
+                    deleteUser={this.deleteUser} 
+                />
             </div>
         );
     }
 }
 
-export default Container;
+export default Content;

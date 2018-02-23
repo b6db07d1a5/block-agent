@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import fnsFormat from 'date-fns/format'
-import { Table, Button, Glyphicon } from 'react-bootstrap'
+import { Table, Button, Label, Glyphicon } from 'react-bootstrap'
 
-class ListAgent extends Component {
+class UserList extends Component {
     
     render() {
         return (
@@ -18,10 +18,15 @@ class ListAgent extends Component {
                 {this.props.list.map((user, i) => 
                     <tr key={user.id}>
                         <td> {user.value} </td>
-                        <td> {(user.expireAt? fnsFormat(new Date(user.expireAt), 'DD/MM/YYYY HH:mm:ss') : '' )} </td>
+                        <td> 
+                            <div>
+                                { (user.expireAt && fnsFormat(new Date(user.expireAt), 'DD/MM/YYYY HH:mm:ss') )} {' '}
+                                {(user.isExpire && <Label bsStyle="warning">Expired</Label> )}
+                            </div>
+                        </td>
                         <td> 
                             <center>
-                                <Button bsSize='xsmall' bsStyle="danger" id={user.id} name={user.type} onClick={this.props.deleteUser}> 
+                                <Button bsSize='xsmall' bsStyle="danger" name={user.type} onClick={this.props.deleteUser(user.id)}> 
                                     <Glyphicon glyph="glyphicon glyphicon-trash" /> {' '}
                                     Delete 
                                 </Button>
@@ -36,4 +41,4 @@ class ListAgent extends Component {
     }
 }
 
-export default ListAgent;
+export default UserList;

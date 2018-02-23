@@ -24,31 +24,34 @@ Promise.all([
 ])
 
 function exportUser(items) {
-    if(items.length === 0) return '';
     const result = items.filter(item => item.type === TYPE_USER_AGENT && !isExpire(item.expireAt))
       .map(({ value }) => value)
       .join('|')
+
+    if(result.length === 0) return '';
   
     return `if ($http_user_agent ~* (${result}) ) {
         return 403;
-  }`
-  }
+}`
+}
   
-  function exportIp(items) {
-    const result = items.filter((item) => item.type === TYPE_IP && !isExpire(item.expireAt))
-    
-    let denyStr = ''
-    result.forEach(({ value }) => {
-        denyStr += `Deny ${value};\n`
-    });
-    return denyStr;
-  }
+function exportIp(items) {
+  const result = items.filter((item) => item.type === TYPE_IP && !isExpire(item.expireAt))
+  
+  if(result.length === 0) return '';
+  
+  let denyStr = ''
+  result.forEach(({ value }) => {
+      denyStr += `Deny ${value};\n`
+  });
+  return denyStr;
+}
 
-  function isExpire(date) {
-    if(!date) return false;
-    const result = compareAsc(
-      new Date(date),
-      new Date()
-    )
-    return result >= 0
-  }
+function isExpire(date) {
+  if(!date) return false;
+  const result = compareAsc(
+    new Date(),
+    new Date(date)
+  )
+  return result >= 0
+}
