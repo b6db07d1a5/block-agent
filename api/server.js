@@ -74,6 +74,7 @@ app.post('/blocked', async (req, res) => {
 
   const item = {
     id: uuidv1(),
+    startDate: Date.now(),
     ...value
   }
 

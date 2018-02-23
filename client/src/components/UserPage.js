@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import UserContent from './UserContent'
 import { Grid, Row, Col, PageHeader } from 'react-bootstrap';
+
 class UserPage extends Component {
     render() {
         return (
