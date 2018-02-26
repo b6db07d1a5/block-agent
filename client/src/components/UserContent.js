@@ -94,7 +94,7 @@ class Content extends Component {
             })
         });
     }
-    deleteUser = id => () => {
+    deleteUser = (id) => () => {
         const result = window.confirm("Do you want to delete this user?");
         if (!result) return;
 
@@ -103,7 +103,6 @@ class Content extends Component {
                 this.setState({
                     list: this.state.list.filter((item) => item.id !== id)
                 })
-                //alert(`Delete User Agent is ${response.statusText}`)
             })
             .catch(function (error) {
                 console.log('error', error)
