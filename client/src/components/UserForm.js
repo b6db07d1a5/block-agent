@@ -14,8 +14,8 @@ const WrapForm = styled.div`
 }
 `;
 
-const UserForm = (props) => {
-    
+export default function UserForm(props) {
+
     const {
         title, 
         value:{ value, timeValue, timeUnit }, 
@@ -77,5 +77,3 @@ const UserForm = (props) => {
         </WrapForm>
     );
 };
-
-export default UserForm;

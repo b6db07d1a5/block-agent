@@ -2,7 +2,7 @@ import React from 'react';
 import UserContainer from './UserContainer'
 import { Grid, Row, Col, PageHeader } from 'react-bootstrap';
 
-const UserPage = () => {
+export default function UserPage() {
     return (
         <Grid>
             <PageHeader>
@@ -19,5 +19,3 @@ const UserPage = () => {
         </Grid>
     );
 };
-
-export default UserPage;

@@ -2,14 +2,14 @@ import React from 'react';
 import fnsFormat from 'date-fns/format'
 import { Table, Button, Label, Glyphicon } from 'react-bootstrap'
 
-const UserList = (props) => {
+export default function UserList(props) {
 
     const {
         title, 
         list, 
         deleteUser
     } = props
-    
+
     return (
         <Table striped bordered condensed hover>
             <thead>
@@ -48,5 +48,3 @@ const UserList = (props) => {
         </Table>
     );
 };
-
-export default UserList;
