@@ -43,6 +43,7 @@ class Content extends Component {
                 console.log(error);
             });
     }
+
     setValue = (e) => {
         const { value } = e.target
         this.setState({
@@ -54,16 +55,19 @@ class Content extends Component {
                     })
         })
     }
+
     setTimeUnit = (event, eventValue) => {
         this.setState({
             timeUnit: eventValue.target.text
         })
     }
+
     setTimeValue = (e) => {
         this.setState({
             timeValue: e.target.value
         })
     }
+    
     blockUser = (e) => {
         const { value, timeUnit, timeValue } = this.state
         const { type } = this.props
@@ -94,6 +98,7 @@ class Content extends Component {
             })
         });
     }
+
     deleteUser = (id) => () => {
         const result = window.confirm("Do you want to delete this user?");
         if (!result) return;
