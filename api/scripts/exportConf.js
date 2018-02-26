@@ -42,7 +42,7 @@ function exportIp(items) {
   
   let denyStr = ''
   result.forEach(({ value }) => {
-      denyStr += `Deny ${value};\n`
+      denyStr = denyStr.concat(`Deny ${value};\n`)
   });
   return denyStr;
 }
