@@ -32,6 +32,12 @@ export default class UserContainer extends Component {
 
     state = defaultState
 
+    setValue = this.setValue.bind(this)
+    setTimeUnit = this.setTimeUnit.bind(this)
+    setTimeValue = this.setTimeValue.bind(this)
+    blockUser = this.blockUser.bind(this)
+    deleteUser = this.deleteUser.bind(this)
+
     componentDidMount() {
         axios.get(`${api}/blocked/${this.props.type}`)
             .then((response) => {
@@ -44,7 +50,7 @@ export default class UserContainer extends Component {
             });
     }
 
-    setValue = (e) => {
+    setValue(e) {
         const { value } = e.target
         this.setState({
             value: value,
@@ -56,19 +62,19 @@ export default class UserContainer extends Component {
         })
     }
 
-    setTimeUnit = (event, eventValue) => {
+    setTimeUnit(event, eventValue) {
         this.setState({
             timeUnit: eventValue.target.text
         })
     }
 
-    setTimeValue = (e) => {
+    setTimeValue(e) {
         this.setState({
             timeValue: e.target.value
         })
     }
     
-    blockUser = (e) => {
+    blockUser(e) {
         const { value, timeUnit, timeValue } = this.state
         const { type } = this.props
         if(!value) {
@@ -99,20 +105,21 @@ export default class UserContainer extends Component {
         });
     }
 
-    deleteUser = (id) => () => {
-        const result = window.confirm("Do you want to delete this user?");
-        if (!result) return;
+    deleteUser(id) {
+        return function() {
+            const result = window.confirm("Do you want to delete this user?");
+            if (!result) return;
 
-        axios.delete(`${api}/blocked/${id}`)
-            .then((response) => {
-                this.setState({
-                    list: this.state.list.filter((item) => item.id !== id)
+            axios.delete(`${api}/blocked/${id}`)
+                .then((response) => {
+                    this.setState({
+                        list: this.state.list.filter((item) => item.id !== id)
+                    })
                 })
-            })
-            .catch(function (error) {
-                console.log('error', error)
-                alert(error.response.data.error)
-            });
+                .catch(function (error) {
+                    alert(get(error, 'response.data.error', error.message))
+                });
+        }.bind(this)
     }
 
     render() {
