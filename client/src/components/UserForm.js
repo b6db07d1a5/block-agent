@@ -15,7 +15,17 @@ const WrapForm = styled.div`
 `;
 
 const UserForm = (props) => {
-    const {title, value:{ value, timeValue, timeUnit }, setValue, setTimeUnit, setTimeValue, blockUser, error} = props
+    
+    const {
+        title, 
+        value:{ value, timeValue, timeUnit }, 
+        setValue, 
+        setTimeUnit, 
+        setTimeValue, 
+        blockUser, 
+        error
+    } = props
+
     return (
         <WrapForm>
             <Sticky innerZ={1}>
