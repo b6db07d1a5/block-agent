@@ -28,7 +28,7 @@ function setUnixDate(timeUnit, timeValue) {
     return (Date.now() / 1000) + (timeValue * mapTimeUnit[timeUnit])
 }
 
-class Content extends Component {
+class UserContainer extends Component {
 
     state = defaultState
 
@@ -138,4 +138,4 @@ class Content extends Component {
     }
 }
 
-export default Content;
+export default UserContainer;
