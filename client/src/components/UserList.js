@@ -32,8 +32,8 @@ class UserList extends Component {
                                             bsStyle="danger" 
                                             name={user.type} 
                                             onClick={this.props.deleteUser(user.id)}> 
-                                    <Glyphicon glyph="glyphicon glyphicon-trash" /> {' '}
-                                    Delete 
+                                        <Glyphicon glyph="glyphicon glyphicon-trash" /> {' '}
+                                        Delete 
                                     </Button>
                                 </center>
                             </td>

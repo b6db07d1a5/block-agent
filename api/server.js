@@ -74,7 +74,7 @@ app.post('/blocked', async (req, res) => {
 
   const item = {
     id: uuidv1(),
-    startDate: Date.now(),
+    startDate: new Date(),
     ...value
   }
 
@@ -102,10 +102,9 @@ app.delete('/blocked/:id', async (req, res) => {
   
   try {
     await fs.writeJson(blockedFileJson, result)
-    console.log('before Hello')
+    
     return res.send({status: (items.length === result.length? 'can not delete' : 'success')})
   } catch (error) {
-    console.log('in catch')
     return res.status(500).send({error: error.message})
   }
 
