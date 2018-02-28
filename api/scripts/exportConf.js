@@ -17,7 +17,6 @@ try {
 } catch (error) {
 
 }
-
 Promise.all([
     fs.outputFile(blockedUserAgentConf, exportUser(items)),
     fs.outputFile(blockedIpConf, exportIp(items))
