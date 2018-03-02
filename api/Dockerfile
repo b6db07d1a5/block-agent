@@ -1,13 +1,18 @@
 FROM node:8.9.4-alpine
 
-RUN mkdir /home/node/app
-
-COPY . ./home/node/app
+RUN apk update \
+    && apk add tzdata \
+    && cp /usr/share/zoneinfo/Asia/Bangkok /etc/localtime \
+    && echo "Asia/Bangkok" > /etc/timezone \
+    && apk del tzdata
 
 WORKDIR /home/node/app
 
+COPY package.json yarn.lock ./
 RUN yarn install
 
-CMD yarn start
+COPY . .
 
-EXPOSE 3001
+CMD ["yarn", "start"]
+
+EXPOSE 5000
