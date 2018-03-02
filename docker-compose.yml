@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  frontend:
+    build: ./client
+    command: ["yarn", "start"]
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client:/home/node/app
+      - /home/node/app/node_modules
